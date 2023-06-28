@@ -1,10 +1,9 @@
 import { Component } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Searchbar from 'components/searchbar';
 import css from './App.module.css';
 import ImageGallery from 'components/imageGallery';
-import ImageGalleryItem from 'components/imageGalleryItem';
 import Modal from 'components/modal';
 import Button from 'components/button';
 
@@ -23,7 +22,7 @@ class App extends Component {
     this.setState(({ showModal }) => ({ showModal: !showModal }));
 
   render() {
-    const { picturesName, showModal, page } = this.state;
+    const { showModal, page } = this.state;
 
     return (
       <div className={css['app-container']}>

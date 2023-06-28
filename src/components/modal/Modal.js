@@ -17,7 +17,7 @@ class Modal extends Component {
   }
 
   render() {
-    const { picturesName, showModal } = this.props;
+    const { showModal } = this.props;
     console.log(showModal);
 
     return createPortal(

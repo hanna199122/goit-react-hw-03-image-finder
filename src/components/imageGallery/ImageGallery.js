@@ -46,8 +46,8 @@ class ImageGallery extends Component {
   }
 
   render() {
-    const { pictures, loading, error } = this.state;
-    const { picturesName, showModal } = this.props;
+    const { pictures, loading } = this.state;
+    const { showModal } = this.props;
 
     return (
       <>

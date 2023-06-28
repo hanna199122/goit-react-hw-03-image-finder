@@ -1,10 +1,10 @@
 import { Component } from 'react';
 import css from './ImageGalleryItem.module.css';
-import Modal from 'components/modal';
+// import Modal from 'components/modal';
 
 class ImageGalleryItem extends Component {
   render() {
-    const { id, webformatURL, largeImageURL, tags } = this.props.picture;
+    const { id, webformatURL, tags } = this.props.picture;
     // const { showModal } = this.props;
     return (
       <li key={id} className={css['gallery-item']}>
