@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import { ThreeDots } from 'react-loader-spinner';
 import css from './ImageGallery.module.css';
 import ImageGalleryItem from '../imageGalleryItem';
