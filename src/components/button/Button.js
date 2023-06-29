@@ -4,7 +4,6 @@ const Button = ({ page }) => {
   function handleNextPage() {
     return (page += 1);
   }
-
   return (
     <button
       className={css.button}

@@ -6,7 +6,7 @@ import css from './App.module.css';
 import ImageGallery from 'components/imageGallery';
 import Modal from 'components/modal';
 import Button from 'components/button';
-// import picturesAPI from 'services/pictures-api';
+import API from 'services/pictures-api';
 
 class App extends Component {
   state = {
@@ -16,6 +16,7 @@ class App extends Component {
     pictures: [],
     loading: false,
     error: null,
+    largeImageURL: '',
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -27,28 +28,9 @@ class App extends Component {
       this.state.picturesName !== prevState.picturesName
     ) {
       this.setState({ loading: true, pictures: [] });
-      const BASE_API = 'https://pixabay.com/api/';
-      const API_KEY = '36122923-4c7f71e9d9d6e85a0cc171286';
 
-      fetch(
-        `${BASE_API}?key=${API_KEY}&q=${nextName}&${this.state.page}&image_type=photo&orientation=horizontal&per_page=12`
-      )
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          }
-          return Promise.reject(
-            new Error(
-              toast.error(`Немає такої картинки ${nextName}`, {
-                theme: 'colored',
-              })
-            )
-          );
-        })
-        // picturesAPI
-        //   .fetchPictures(nextName)
+      API.fetchPictures(nextName)
         .then(picture => {
-          console.log(picture);
           if (picture.hits.length === 0) {
             return toast.error(`Немає такої картинки ${nextName}`, {
               theme: 'colored',
@@ -62,16 +44,44 @@ class App extends Component {
     }
   }
 
+  // async getPictures = pictures => {
+  //   const data = await API.fetchPictures()
+  //     .then(picture => {
+  //       if (picture.hits.length === 0) {
+  //         return toast.error(`Немає такої картинки `, {
+  //           theme: 'colored',
+  //         });
+  //       } else {
+  //         this.setState({ pictures: [...picture.hits] });
+  //       }
+  //     })
+  //     .catch(error => this.setState({ error }))
+  //     .finally(() => this.setState({ loading: false }));
+  //   console.log(data);
+  // };
+
   handleFormSubmit = picturesName => {
     this.setState({ picturesName });
+  };
+
+  getLargeImg = largeImageURL => {
+    this.setState({ largeImageURL });
   };
 
   toggleModal = () =>
     this.setState(({ showModal }) => ({ showModal: !showModal }));
 
+  showMore = pictures => {
+    const picturesCollection = API.fetchPictures();
+    console.log(picturesCollection);
+    this.setState(state => ({
+      pictures: [...state.pictures, picturesCollection],
+    }));
+  };
+
   render() {
     console.log(this.state.pictures);
-    const { showModal, page, pictures, loading } = this.state;
+    const { showModal, page, pictures, loading, largeImageURL } = this.state;
 
     return (
       <div className={css['app-container']}>
@@ -81,12 +91,16 @@ class App extends Component {
             showModal={this.toggleModal}
             pictures={pictures}
             loading={loading}
+            getLargeImg={this.getLargeImg}
           />
-          <Button page={page} />
+          {loading ||
+            (pictures.length !== 0 && (
+              <Button page={page} addPictures={this.showMore} />
+            ))}
         </div>
         {showModal && (
           <Modal showModal={this.toggleModal}>
-            {/* <img src={largeImageURL} alt={tags} /> */}
+            <img src={largeImageURL} alt="" />
           </Modal>
         )}
         <ToastContainer />
