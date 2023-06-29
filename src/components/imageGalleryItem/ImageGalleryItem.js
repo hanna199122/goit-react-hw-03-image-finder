@@ -5,7 +5,7 @@ import css from './ImageGalleryItem.module.css';
 class ImageGalleryItem extends Component {
   render() {
     const { id, webformatURL, tags } = this.props.picture;
-    // const { showModal } = this.props;
+
     return (
       <li key={id} className={css['gallery-item']}>
         <img src={webformatURL} alt={tags} />

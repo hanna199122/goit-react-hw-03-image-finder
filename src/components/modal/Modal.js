@@ -8,12 +8,19 @@ const modalRoot = document.querySelector('#root-modal');
 
 class Modal extends Component {
   componentDidMount() {
-    window.addEventListener('keydown', e => {
-      if (e.code === 'Escape') {
-        console.log('showModal modal');
-        this.props.showModal();
-      }
-    });
+    window.addEventListener('keydown', this.onEscape);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.onEscape);
+  }
+
+  onEscape(e) {
+    console.log(e);
+    if (e.code === 'Escape') {
+      console.log('hello');
+      this.props.showModal();
+    }
   }
 
   render() {
