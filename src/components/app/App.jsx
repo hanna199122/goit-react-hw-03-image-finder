@@ -7,6 +7,8 @@ import ImageGallery from 'components/imageGallery';
 import Modal from 'components/modal';
 import Button from 'components/button';
 import API from 'services/pictures-api';
+import { ThreeDots } from 'react-loader-spinner';
+// import getFetchImages from 'functions/getImages';
 
 class App extends Component {
   state = {
@@ -28,7 +30,7 @@ class App extends Component {
 
       API.fetchPictures(this.state.picturesName, this.state.page)
         .then(picture => {
-          if (picture.hits.length === 0) {
+          if (picture.hits.length === 0 || picture.total === 0) {
             return toast.error(
               `Немає такої картинки ${this.state.picturesName}`,
               {
@@ -49,13 +51,18 @@ class App extends Component {
   }
 
   showMorePictures = e => {
-    this.setState(prevState => {
-      return { page: prevState.page + 1 };
-    });
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
   };
 
   handleFormSubmit = picturesName => {
-    this.setState({ picturesName });
+    this.setState({
+      picturesName,
+      pictures: [],
+      page: 1,
+      isLoadMoreEnabled: false,
+    });
   };
 
   getLargeImg = largeImageURL => {
@@ -78,13 +85,14 @@ class App extends Component {
             isLoading={isLoading}
             getLargeImg={this.getLargeImg}
           />
-          {isLoading ||
-            (pictures.length >= 12 && (
-              <Button
-                page={page}
-                showMorePictures={this.showMorePictures}
-              ></Button>
-            ))}
+          {isLoading && <ThreeDots color="#3f51b5" />}
+          {pictures.length !== 0 && (
+            <Button
+              page={page}
+              showMorePictures={this.showMorePictures}
+              // isLoadMoreEnabled={isLoadMoreEnabled}
+            ></Button>
+          )}
         </div>
         {showModal && (
           <Modal showModal={this.toggleModal}>

@@ -14,7 +14,6 @@ class Modal extends Component {
   }
 
   onEscape = e => {
-    console.log(e);
     if (e.code === 'Escape') {
       this.props.showModal();
     }
@@ -22,7 +21,6 @@ class Modal extends Component {
 
   render() {
     const { showModal } = this.props;
-    console.log(showModal);
 
     return createPortal(
       <div className={css.overlay} onClick={showModal}>
