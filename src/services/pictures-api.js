@@ -1,11 +1,11 @@
 import { toast } from 'react-toastify';
 
-async function fetchPictures(name, page) {
-  const BASE_API = 'https://pixabay.com/api/';
-  const API_KEY = '36122923-4c7f71e9d9d6e85a0cc171286';
+const BASE_API = 'https://pixabay.com/api/';
+const API_KEY = '36122923-4c7f71e9d9d6e85a0cc171286';
 
+async function fetchPictures(name, page) {
   return await fetch(
-    `${BASE_API}?key=${API_KEY}&q=${name}&${page}&image_type=photo&orientation=horizontal&per_page=12`
+    `${BASE_API}?key=${API_KEY}&q=${name}&page=${page}&image_type=photo&orientation=horizontal&per_page=12`
   ).then(response => {
     if (response.ok) {
       return response.json();

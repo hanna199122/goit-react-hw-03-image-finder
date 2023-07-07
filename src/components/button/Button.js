@@ -1,14 +1,8 @@
 import css from './Button.module.css';
 
-const Button = ({ page }) => {
-  function handleNextPage() {
-    return (page += 1);
-  }
+const Button = ({ page, showMorePictures }) => {
   return (
-    <button
-      className={css.button}
-      onClick={() => console.log(handleNextPage())}
-    >
+    <button className={css.button} onClick={showMorePictures}>
       Load more
     </button>
   );

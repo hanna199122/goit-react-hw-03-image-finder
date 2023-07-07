@@ -14,51 +14,45 @@ class App extends Component {
     showModal: false,
     page: 1,
     pictures: [],
-    loading: false,
+    isLoading: false,
     error: null,
     largeImageURL: '',
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const prevName = prevState.picturesName;
-    const nextName = this.state.picturesName;
-
     if (
-      prevName !== nextName ||
-      this.state.picturesName !== prevState.picturesName
+      this.state.picturesName !== prevState.picturesName ||
+      this.state.page !== prevState.page
     ) {
-      this.setState({ loading: true, pictures: [] });
+      this.setState({ isLoading: true });
 
-      API.fetchPictures(nextName)
+      API.fetchPictures(this.state.picturesName, this.state.page)
         .then(picture => {
           if (picture.hits.length === 0) {
-            return toast.error(`Немає такої картинки ${nextName}`, {
-              theme: 'colored',
-            });
+            return toast.error(
+              `Немає такої картинки ${this.state.picturesName}`,
+              {
+                theme: 'colored',
+              }
+            );
           } else {
-            this.setState({ pictures: [...picture.hits] });
+            this.setState(prevState => {
+              return {
+                pictures: [...prevState.pictures, ...picture.hits],
+              };
+            });
           }
         })
-        .catch(error => this.setState({ error }))
-        .finally(() => this.setState({ loading: false }));
+        .catch(error => this.setState({ error: error.message }))
+        .finally(() => this.setState({ isLoading: false }));
     }
   }
 
-  // async getPictures = pictures => {
-  //   const data = await API.fetchPictures()
-  //     .then(picture => {
-  //       if (picture.hits.length === 0) {
-  //         return toast.error(`Немає такої картинки `, {
-  //           theme: 'colored',
-  //         });
-  //       } else {
-  //         this.setState({ pictures: [...picture.hits] });
-  //       }
-  //     })
-  //     .catch(error => this.setState({ error }))
-  //     .finally(() => this.setState({ loading: false }));
-  //   console.log(data);
-  // };
+  showMorePictures = e => {
+    this.setState(prevState => {
+      return { page: prevState.page + 1 };
+    });
+  };
 
   handleFormSubmit = picturesName => {
     this.setState({ picturesName });
@@ -71,17 +65,8 @@ class App extends Component {
   toggleModal = () =>
     this.setState(({ showModal }) => ({ showModal: !showModal }));
 
-  showMore = pictures => {
-    const picturesCollection = API.fetchPictures();
-    console.log(picturesCollection);
-    this.setState(state => ({
-      pictures: [...state.pictures, picturesCollection],
-    }));
-  };
-
   render() {
-    console.log(this.state.pictures);
-    const { showModal, page, pictures, loading, largeImageURL } = this.state;
+    const { showModal, page, pictures, isLoading, largeImageURL } = this.state;
 
     return (
       <div className={css['app-container']}>
@@ -90,12 +75,15 @@ class App extends Component {
           <ImageGallery
             showModal={this.toggleModal}
             pictures={pictures}
-            loading={loading}
+            isLoading={isLoading}
             getLargeImg={this.getLargeImg}
           />
-          {loading ||
-            (pictures.length !== 0 && (
-              <Button page={page} addPictures={this.showMore} />
+          {isLoading ||
+            (pictures.length >= 12 && (
+              <Button
+                page={page}
+                showMorePictures={this.showMorePictures}
+              ></Button>
             ))}
         </div>
         {showModal && (

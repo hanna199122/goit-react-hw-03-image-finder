@@ -4,8 +4,6 @@ import css from './Modal.module.css';
 
 const modalRoot = document.querySelector('#root-modal');
 
-// console.log(modalRoot);
-
 class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.onEscape);
@@ -15,13 +13,12 @@ class Modal extends Component {
     window.removeEventListener('keydown', this.onEscape);
   }
 
-  onEscape(e) {
+  onEscape = e => {
     console.log(e);
     if (e.code === 'Escape') {
-      console.log('hello');
       this.props.showModal();
     }
-  }
+  };
 
   render() {
     const { showModal } = this.props;

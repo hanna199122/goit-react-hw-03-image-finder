@@ -2,11 +2,11 @@ import { ThreeDots } from 'react-loader-spinner';
 import css from './ImageGallery.module.css';
 import ImageGalleryItem from '../imageGalleryItem';
 
-const ImageGallery = ({ showModal, pictures, loading, getLargeImg }) => {
+const ImageGallery = ({ showModal, pictures, isLoading, getLargeImg }) => {
   return (
     <>
-      {loading ? (
-        <ThreeDots />
+      {isLoading ? (
+        <ThreeDots color="#3f51b5" />
       ) : (
         <ul className={css.imageGalleryList} onClick={showModal}>
           {pictures.map(({ id, largeImageURL, tags, webformatURL }) => {
