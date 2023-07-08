@@ -1,6 +1,7 @@
 import css from './Button.module.css';
+import PropTypes from 'prop-types';
 
-const Button = ({ page, showMorePictures }) => {
+const Button = ({ showMorePictures }) => {
   return (
     <button className={css.button} onClick={showMorePictures}>
       Load more
@@ -9,3 +10,7 @@ const Button = ({ page, showMorePictures }) => {
 };
 
 export default Button;
+
+Button.propTypes = {
+  showMorePictures: PropTypes.func,
+};

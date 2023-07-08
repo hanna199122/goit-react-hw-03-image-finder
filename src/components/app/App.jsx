@@ -8,6 +8,7 @@ import Modal from 'components/modal';
 import Button from 'components/button';
 import API from 'services/pictures-api';
 import { ThreeDots } from 'react-loader-spinner';
+import PropTypes from 'prop-types';
 // import getFetchImages from 'functions/getImages';
 
 class App extends Component {
@@ -86,12 +87,13 @@ class App extends Component {
             getLargeImg={this.getLargeImg}
           />
           {isLoading && <ThreeDots color="#3f51b5" />}
-          {pictures.length !== 0 && (
+          {pictures.length !== 0 ? (
             <Button
               page={page}
               showMorePictures={this.showMorePictures}
-              // isLoadMoreEnabled={isLoadMoreEnabled}
             ></Button>
+          ) : (
+            ' '
           )}
         </div>
         {showModal && (
@@ -105,3 +107,17 @@ class App extends Component {
   }
 }
 export default App;
+
+App.propTypes = {
+  picturesName: PropTypes.string,
+  showModal: PropTypes.bool,
+  page: PropTypes.number,
+  pictures: PropTypes.array,
+  isLoading: PropTypes.bool,
+  error: PropTypes.string,
+  largeImageURL: PropTypes.string,
+  showMorePictures: PropTypes.func,
+  handleFormSubmit: PropTypes.func,
+  getLargeImg: PropTypes.func,
+  toggleModal: PropTypes.func,
+};
