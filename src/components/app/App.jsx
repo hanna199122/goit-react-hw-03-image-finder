@@ -87,7 +87,7 @@ class App extends Component {
             getLargeImg={this.getLargeImg}
           />
           {isLoading && <ThreeDots color="#3f51b5" />}
-          {pictures.length !== 0 ? (
+          {pictures.length >= 12 ? (
             <Button
               page={page}
               showMorePictures={this.showMorePictures}
